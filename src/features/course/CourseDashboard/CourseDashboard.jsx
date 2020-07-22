@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Grid, Button } from 'semantic-ui-react'
 import CourseList from '../CourseList/CourseList'
 import CourseForm from '../CourseForm/CourseForm'
+import cuid from 'cuid'
 
 
 const coursesFromDashboard = [
@@ -66,6 +67,16 @@ class CourseDashboard extends Component {
             isOpen:!isOpen
         }))
     }
+
+    handleCreateCourse = (newCourse) => {
+        newCourse.id = cuid();
+        newCourse.hostPhotoURL = '/assets/user.png';
+        this.setState(({courses}) => ({
+        courses: [...courses, newCourse],
+        isOpen: false 
+    }))
+    }
+
     render() {
         const {courses, isOpen} = this.state;
         return (
@@ -76,7 +87,12 @@ class CourseDashboard extends Component {
                    </Grid.Column>
                    <Grid.Column width={6}>
                        <Button onClick={this.handleIsOpenToggle} positive content ='Create Course' />
-                       {isOpen && <CourseForm cancelFormOpen={this.handleIsOpenToggle}/>}
+                       {isOpen &&( 
+                        <CourseForm
+                        createCourse={this.handleCreateCourse}
+                        cancelFormOpen={this.handleIsOpenToggle}
+                        />
+                       )}
                        
                    </Grid.Column>
                    </Grid> 

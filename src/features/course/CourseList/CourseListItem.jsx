@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Segment, Item, Icon, Button, List } from 'semantic-ui-react';
-import CourseList from './CourseList';
 import CourseListAtendee from './CourseListAtendee';
 
 class CourseListItem extends Component {
@@ -15,9 +14,9 @@ class CourseListItem extends Component {
                           circular 
                           src={course.hostPhotoURL} />
                           <Item.Content>
-                            <Item.Header as="a">{course.title}</Item.Header>
+                            <Item.Header>{course.title}</Item.Header>
                             <Item.Description>
-                              Hosted by <a>{course.hostedBy}</a>
+                              Hosted by {course.hostedBy}
                             </Item.Description>
                           </Item.Content>
                         </Item>
@@ -31,7 +30,7 @@ class CourseListItem extends Component {
                     </Segment>
                     <Segment secondary>
                       <List horizontal>
-                        {course.attendees.map(attendee => (
+                        {course.attendees && course.attendees.map(attendee => (
                           <CourseListAtendee key={attendee.id} attendee={attendee}/>
                         ))}
                         

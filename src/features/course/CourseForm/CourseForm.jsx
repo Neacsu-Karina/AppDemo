@@ -8,9 +8,21 @@ class CourseForm extends Component {
     hostedBy: "",
   };
 
+  componentDidMount() {
+    if (this.props.selectedCourse !== null) {
+      this.setState({
+        ...this.props.selectedCourse,
+      });
+    }
+  }
+
   handleFormSubmit = (crs) => {
     crs.preventDefault();
-    this.props.createCourse(this.state);
+    if (this.state.id) {
+      this.props.updatedCourse(this.state);
+    } else {
+      this.props.createCourse(this.state);
+    }
   };
 
   handleInputChange = ({ target: { name, value } }) => {

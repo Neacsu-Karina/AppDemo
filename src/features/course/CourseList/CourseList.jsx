@@ -3,10 +3,11 @@ import CourseListItem from './CourseListItem'
 
 class CourseList extends Component {
     render() {
+        const{courses, selectCourse} = this.props;
         return (
             <Fragment>
-                {this.props.courses.map(course => (
-                <CourseListItem key={course.id} course={course}/>
+                {courses.map(course => (
+                <CourseListItem key={course.id} course={course} selectCourse={selectCourse}/>
             
                 ))}
             </Fragment>

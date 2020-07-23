@@ -4,7 +4,7 @@ import CourseListAtendee from './CourseListAtendee';
 
 class CourseListItem extends Component {
     render() {
-      const {course} =this.props;
+      const {course, selectCourse} =this.props;
         return (
                  <Segment.Group>
                     <Segment>
@@ -38,7 +38,11 @@ class CourseListItem extends Component {
                     </Segment>
                     <Segment clearing>
                         <span>{course.description}</span>
-                      <Button as="a" color="teal" floated="right" content="View" />
+                      <Button onClick= {(crs) =>  selectCourse(crs, course)}
+                      as="a" 
+                      color="teal" 
+                      floated="right" 
+                      content="View" />
                     </Segment>
                   </Segment.Group>
         )

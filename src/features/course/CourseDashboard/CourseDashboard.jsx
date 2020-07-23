@@ -9,7 +9,7 @@ const coursesFromDashboard = [
   {
     id: '1',
     title: 'Trip to Tower of London',
-    date: '2018-03-27T11:00:00+00:00',
+    date: '2018-03-27',
     category: 'culture',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',
@@ -33,7 +33,7 @@ const coursesFromDashboard = [
   {
     id: '2',
     title: 'Trip to Punch and Judy Pub',
-    date: '2018-03-28T14:00:00+00:00',
+    date: '2018-03-28',
     category: 'drinks',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',
@@ -62,10 +62,24 @@ class CourseDashboard extends Component {
         isOpen:false
     };
 
-    handleIsOpenToggle = () => {
-        this.setState(({isOpen}) => ({
-            isOpen:!isOpen
-        }))
+    // handleIsOpenToggle = () => {
+    //     this.setState(({isOpen}) => ({
+    //         isOpen:!isOpen
+    //     }))
+    // }
+
+    handleCreateFormOpen = () =>{
+        this.setState({
+            isOpen: true,
+            selectedCourse: null
+        })
+
+    }
+
+    handleFormCancel =() =>{
+        this.setState({
+            isOpen: false
+        })
     }
 
     handleCreateCourse = (newCourse) => {
@@ -73,24 +87,50 @@ class CourseDashboard extends Component {
         newCourse.hostPhotoURL = '/assets/user.png';
         this.setState(({courses}) => ({
         courses: [...courses, newCourse],
-        isOpen: false 
+        isOpen: false, 
+        selectedCourse: null
     }))
     }
 
+    handleSelectCourse = (crs, course) => {
+        console.log(crs);
+        console.log(course);
+        this.setState({
+            selectedCourse: course,
+            isOpen:true
+        })
+    }
+
+    handleUpdateCourse = (updatedCourse) => {
+        this.setState(({courses}) => ({
+            courses:  courses.map(course => {
+                if(course.id === updatedCourse.id){
+                    return{...updatedCourse}
+                } else{
+                    return course
+                }
+            }),
+            isOpen: false,
+            selectedCourse: null
+        }))
+    }
     render() {
-        const {courses, isOpen} = this.state;
+        const {courses, isOpen, selectedCourse} = this.state;
         return (
             <div>
                <Grid>
                    <Grid.Column width={10}>
-                       <CourseList courses={courses}/>
+                       <CourseList courses={courses} selectCourse={this.handleSelectCourse}/>
                    </Grid.Column>
                    <Grid.Column width={6}>
-                       <Button onClick={this.handleIsOpenToggle} positive content ='Create Course' />
+                       <Button onClick={this.handleCreateFormOpen} positive content ='Create Course' />
                        {isOpen &&( 
                         <CourseForm
+                        key={selectedCourse ? selectedCourse.id : 0}
+                        updatedCourse={this.handleUpdateCourse}
+                        selectedCourse={selectedCourse}
                         createCourse={this.handleCreateCourse}
-                        cancelFormOpen={this.handleIsOpenToggle}
+                        cancelFormOpen={this.handleFormCancel}
                         />
                        )}
                        
